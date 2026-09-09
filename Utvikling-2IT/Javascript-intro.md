@@ -6,6 +6,6 @@ header: ''
 
 <!-- class: lead -->
 
-# Programmering
+# JavaScript
 
 Hva og hvordan
