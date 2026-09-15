@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A beginner-friendly introduction to Vite, HTML, CSS, TypeScript, and the DOM.">
+  <title>Getting Started with Vite and the DOM</title>
+  <style>
+    :root { --accent:#e4572e; --accent-dark:#8f2d1f; --ink:#172121; --muted:#52605f; --paper:#fffaf2; --surface:#fffdf8; --line:#eadfd1; --code-bg:#f4ede4; color-scheme:light; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:radial-gradient(circle at 8% 0%, rgb(228 87 46 / 10%), transparent 28rem), linear-gradient(135deg,#fffaf2 0%,#f6f1e9 52%,#edf4f2 100%); font-family:Aptos,"Segoe UI",sans-serif; line-height:1.6; }
+    .page-header { padding:5rem 1.5rem 4rem; border-bottom:1px solid rgb(234 223 209 / 80%); background:rgb(255 250 242 / 78%); }
+    .header-inner, main, footer { width:min(100% - 3rem,980px); margin:0 auto; }
+    .eyebrow { margin:0 0 .75rem; color:var(--accent-dark); font-size:.76rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; }
+    h1,h2 { color:var(--ink); line-height:1.1; }
+    h1 { max-width:780px; margin:0; font-size:clamp(2.6rem,7vw,5.4rem); letter-spacing:-.04em; }
+    .subtitle { max-width:680px; margin:1rem 0 0; color:var(--muted); font-size:clamp(1.05rem,2vw,1.35rem); }
+    .toc { display:flex; flex-wrap:wrap; gap:.6rem; margin-top:2rem; }
+    .toc a { padding:.45rem .75rem; border:1px solid var(--line); border-radius:999px; color:var(--accent-dark); background:var(--surface); font-size:.86rem; text-decoration:none; }
+    .toc a:hover,.toc a:focus-visible { border-color:var(--accent); outline:none; }
+    main { padding:2rem 0 4rem; }
+    article { padding:3.5rem 0; border-bottom:1px solid var(--line); scroll-margin-top:1rem; }
+    article:first-child { padding-top:1.5rem; }
+    h2 { margin:0 0 1.25rem; font-size:clamp(1.8rem,4vw,2.8rem); letter-spacing:-.025em; }
+    h3 { margin:2rem 0 .6rem; color:var(--accent-dark); font-size:1.15rem; }
+    strong { color:var(--accent-dark); }
+    blockquote { margin:1.5rem 0; padding:1rem 1.25rem; border-left:4px solid var(--accent); background:rgb(228 87 46 / 8%); font-size:1.08rem; }
+    ul,ol { padding-left:1.5rem; }
+    li + li { margin-top:.35rem; }
+    .table-wrap { overflow-x:auto; margin:1.5rem 0; }
+    table { width:100%; min-width:520px; border-collapse:collapse; background:var(--surface); }
+    th,td { padding:.75rem .9rem; border:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--accent-dark); background:var(--code-bg); }
+    code,pre { font-family:"Cascadia Code",Consolas,monospace; }
+    code { color:var(--accent-dark); }
+    pre { overflow-x:auto; margin:1.25rem 0; padding:1.1rem 1.25rem; border:1px solid var(--line); border-radius:.45rem; background:var(--code-bg); color:var(--ink); font-size:clamp(.78rem,1.5vw,.92rem); line-height:1.55; tab-size:2; }
+    footer { padding:2rem 0 4rem; color:var(--muted); font-size:.9rem; }
+    footer a { color:var(--accent-dark); }
+    @media (max-width:640px) { .page-header { padding:3.5rem 1.5rem 2.5rem; } .header-inner,main,footer { width:min(100% - 2rem,980px); } article { padding:2.5rem 0; } }
+  </style>
+</head>
+<body>
+  <header class="page-header">
+    <div class="header-inner">
+      <p class="eyebrow">Vite + vanilla TypeScript</p>
+      <h1>Build a site, then make it interactive</h1>
+      <p class="subtitle">A beginner's path from HTML and CSS into the DOM</p>
+      <nav class="toc" aria-label="Contents">
+        <a href="#model">The mental model</a><a href="#vite">Start with Vite</a><a href="#dom">The DOM</a><a href="#workflow">Workflow</a><a href="#exercise">First DOM exercise</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <article id="model">
+      <h2>The mental model</h2>
+      <p>A web page is three layers working together:</p>
+      <div class="table-wrap"><table><thead><tr><th>Layer</th><th>Job</th><th>Your first tool</th></tr></thead><tbody><tr><td><strong>HTML</strong></td><td>Content and structure</td><td><code>index.html</code></td></tr><tr><td><strong>CSS</strong></td><td>Appearance and layout</td><td><code>src/style.css</code></td></tr><tr><td><strong>JavaScript</strong></td><td>Behavior and data</td><td><code>src/main.ts</code></td></tr></tbody></table></div>
+      <p>The <strong>DOM</strong> is the browser's live, programmable representation of your HTML.</p>
+      <blockquote>Start with a page that works without JavaScript. Add JavaScript when the user needs an interaction.</blockquote>
+    </article>
+
+    <article id="vite"><h2>Start a Vite project</h2><pre><code>npm create vite@latest my-site -- --template vanilla-ts
+cd my-site
+npm install
+npm run dev</code></pre><p>Vite gives you a fast development server and builds your project for production.</p><p>The important files:</p><pre><code>index.html       page entry point
+src/main.ts      behavior
+src/style.css    styles
+public/          static assets</code></pre></article>
+
+    <article><h2>What Vite does with <code>index.html</code></h2><p><code>index.html</code> is the page the browser opens. It loads your TypeScript module:</p><pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="UTF-8" /&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;
+    &lt;title&gt;My site&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header&gt;
+      &lt;h1&gt;My first site&lt;/h1&gt;
+    &lt;/header&gt;
+    &lt;main id="app"&gt;&lt;/main&gt;
+    &lt;script type="module" src="/src/main.ts"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre><p>You can and should edit this file directly.</p></article>
+
+    <article><h2>Keep the first version HTML-first</h2><p>If content is known in advance, write semantic HTML:</p><pre><code>&lt;main&gt;
+  &lt;section aria-labelledby="welcome-title"&gt;
+    &lt;h2 id="welcome-title"&gt;Welcome&lt;/h2&gt;
+    &lt;p&gt;Here is the information your visitor needs.&lt;/p&gt;
+    &lt;a href="/contact.html"&gt;Contact us&lt;/a&gt;
+  &lt;/section&gt;
+&lt;/main&gt;</code></pre><p>Good HTML gives you structure, accessibility, and a useful page before you write any DOM code.</p><p><strong>Do not make TypeScript create every element by default.</strong></p></article>
+
+    <article><h2>Put styling in CSS</h2><pre><code>/* src/style.css */
+:root {
+  font-family: system-ui, sans-serif;
+  color: #172121;
+  background: #fffaf2;
+}
+
+body {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+button {
+  border: 0;
+  border-radius: 0.4rem;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+}</code></pre><p>Then import the stylesheet once:</p><pre><code>// src/main.ts
+import './style.css'</code></pre></article>
+
+    <article id="dom"><h2>The DOM: find an element</h2><p>The browser turns your HTML into a tree of nodes. TypeScript can find those nodes:</p><pre><code>const button = document.querySelector&lt;HTMLButtonElement&gt;('#theme-button')
+const heading = document.querySelector&lt;HTMLHeadingElement&gt;('h1')</code></pre><p>Useful selectors:</p><pre><code>document.querySelector('#app')       // id
+document.querySelector('.card')      // class
+document.querySelector('button')      // element
+document.querySelectorAll('li')       // many elements</code></pre><p>The <code>?</code> in <code>button?.</code> means: run this only when the element exists.</p></article>
+
+    <article><h2>First interaction: an event listener</h2><h3>HTML:</h3><pre><code>&lt;button id="theme-button" type="button"&gt;Change theme&lt;/button&gt;</code></pre><h3>TypeScript:</h3><pre><code>const button = document.querySelector&lt;HTMLButtonElement&gt;('#theme-button')
+
+button?.addEventListener('click', () =&gt; {
+  document.body.classList.toggle('dark')
+})</code></pre><h3>CSS:</h3><pre><code>.dark {
+  background: #172121;
+  color: #fffaf2;
+}</code></pre><p>The pattern is:</p><p><strong>find -&gt; listen -&gt; change</strong></p></article>
+
+    <article><h2>Change text and attributes</h2><p>Prefer properties when you are changing one value:</p><pre><code>const message = document.querySelector&lt;HTMLParagraphElement&gt;('#message')
+
+if (message) {
+  message.textContent = 'Thanks for clicking!'
+  message.classList.add('success')
+  message.setAttribute('aria-live', 'polite')
+}</code></pre><p>Use <code>textContent</code> for user-provided text. It treats the value as text instead of interpreting it as HTML.</p></article>
+
+    <article><h2><code>innerHTML</code>: useful for small templates</h2><p>For a small, controlled template, a string can be clear:</p><pre><code>const app = document.querySelector&lt;HTMLDivElement&gt;('#app')
+
+if (app) {
+  app.innerHTML = `
+    &lt;h2&gt;Tasks&lt;/h2&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Choose a topic&lt;/li&gt;
+      &lt;li&gt;Sketch the page&lt;/li&gt;
+      &lt;li&gt;Build the first version&lt;/li&gt;
+    &lt;/ul&gt;
+  `
+}</code></pre><p>Use it carefully:</p><ul><li>Great for markup you control</li><li>Convenient when rendering a list</li><li>Do not place untrusted user input directly inside it</li><li>Replacing <code>innerHTML</code> also replaces listeners on those children</li></ul></article>
+
+    <article><h2><code>createElement</code>: precise DOM construction</h2><p>The same list can be created with DOM methods:</p><pre><code>const list = document.createElement('ul')
+
+for (const task of ['Choose a topic', 'Sketch the page']) {
+  const item = document.createElement('li')
+  item.textContent = task
+  list.append(item)
+}
+
+document.querySelector('#app')?.append(list)</code></pre><p>This is more verbose, but it makes text handling and element relationships explicit.</p><p>Use it when you need fine-grained control. You do not need to use it for every static element.</p></article>
+
+    <article><h2>Render from data</h2><p>A simple function makes repeated UI easier to understand:</p><pre><code>type Task = { title: string; done: boolean }
+
+const tasks: Task[] = [
+  { title: 'Choose a topic', done: true },
+  { title: 'Build the first version', done: false },
+]
+
+function renderTasks(items: Task[]) {
+  const list = document.querySelector&lt;HTMLUListElement&gt;('#task-list')
+  if (!list) return
+
+  list.innerHTML = items
+    .map((task) =&gt; `&lt;li&gt;${task.done ? '[x]' : '[ ]'} ${task.title}&lt;/li&gt;`)
+    .join('')
+}
+
+renderTasks(tasks)</code></pre><p>This example assumes <code>task.title</code> is trusted. For user-entered text, use <code>textContent</code> or create elements safely.</p></article>
+
+    <article><h2>Forms: listen for <code>submit</code></h2><h3>HTML:</h3><pre><code>&lt;form id="task-form"&gt;
+  &lt;label for="task-input"&gt;New task&lt;/label&gt;
+  &lt;input id="task-input" name="task" required /&gt;
+  &lt;button type="submit"&gt;Add task&lt;/button&gt;
+&lt;/form&gt;</code></pre><h3>TypeScript:</h3><pre><code>const form = document.querySelector&lt;HTMLFormElement&gt;('#task-form')
+const input = document.querySelector&lt;HTMLInputElement&gt;('#task-input')
+
+form?.addEventListener('submit', (event) =&gt; {
+  event.preventDefault()
+  if (!input || input.value.trim() === '') return
+
+  console.log('New task:', input.value.trim())
+  input.value = ''
+})</code></pre><p>The browser handles the form event. Your code decides what happens next.</p></article>
+
+    <article><h2>Where do extra pages belong?</h2><p>For a small multi-page site:</p><pre><code>index.html
+about.html
+contact.html
+src/
+  main.ts
+  style.css
+public/
+  images/
+  downloads/</code></pre><p>Use root-level HTML files for pages that Vite should process:</p><pre><code>&lt;a href="/about.html"&gt;About&lt;/a&gt;</code></pre><p>Use <code>public/</code> for files copied as-is and served from the site root:</p><pre><code>&lt;img src="/images/logo.png" alt="Company logo" /&gt;</code></pre><p>A single page with several sections is also completely valid. Choose the simplest structure that matches the project.</p></article>
+
+    <article id="workflow"><h2>A beginner-friendly workflow</h2><ol><li><strong>Plan:</strong> identify the user, goal, and content.</li><li><strong>Structure:</strong> write semantic HTML in <code>index.html</code>.</li><li><strong>Style:</strong> make the layout readable and responsive.</li><li><strong>Interact:</strong> add one event listener in <code>main.ts</code>.</li><li><strong>Render:</strong> use a small function when data changes.</li><li><strong>Check:</strong> test keyboard, mobile width, and empty states.</li><li><strong>Commit:</strong> save a small, meaningful step in Git.</li></ol><p>After each step, refresh the page and ask: <em>What changed?</em></p></article>
+
+    <article><h2>Debugging the DOM</h2><p>Use the browser's DevTools:</p><pre><code>console.log('main.ts loaded')
+console.log({ button, input })</code></pre><p>Check these first:</p><ul><li>Is the selector spelled exactly like the HTML id?</li><li>Is the script loaded as <code>type="module"</code>?</li><li>Does the element exist when the code runs?</li><li>Did the event listener attach to the right element?</li><li>Is CSS hiding the change?</li></ul><p>TypeScript errors usually point to a typo or a mismatched type. Read the first error before changing code.</p></article>
+
+    <article id="exercise"><h2>Your first DOM exercise</h2><p>Build a small <strong>reading list</strong>:</p><ul><li>HTML: heading, form, input, button, empty list</li><li>CSS: readable spacing and a mobile layout</li><li>DOM: add a book when the form submits</li><li>DOM: mark a book as read when clicked</li><li>Stretch: show the number of books</li></ul><p>Suggested milestones:</p><pre><code>1. Static page
+2. Button logs a message
+3. Form reads input.value
+4. One item appears
+5. Items come from an array
+6. The array and screen stay in sync</code></pre><p>Do not add a framework until you understand this loop:</p><p><strong>event -&gt; update data -&gt; render UI</strong></p></article>
+
+    <article><h2>The short version</h2><ul><li>HTML describes the page.</li><li>CSS makes it usable and expressive.</li><li>TypeScript adds behavior.</li><li>The DOM connects TypeScript to HTML.</li><li>Start with <code>querySelector</code> and <code>addEventListener</code>.</li><li>Prefer static HTML for static content.</li><li>Use <code>innerHTML</code> for small controlled templates.</li><li>Use <code>createElement</code> when you need precise control.</li><li>Build one small interaction at a time.</li></ul><h2>Start small. Make it work. Then make it better.</h2></article>
+  </main>
+
+  <footer><a href="getting-started-with-vite-and-dom-doc.html">Open the presentation-style version</a></footer>
+</body>
+</html>

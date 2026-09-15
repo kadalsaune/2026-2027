@@ -1,4 +1,4 @@
----
+<!-- ---
 marp: true
 title: Kom i gang med Vite og DOM
 author: Grunnleggende webutvikling
@@ -22,7 +22,7 @@ style: |
   code { color: #8f2d1f; }
   pre { font-size: 0.62em; }
   table { font-size: 0.75em; }
----
+--- -->
 
 # Lag en nettside, og gjør den interaktiv
 
