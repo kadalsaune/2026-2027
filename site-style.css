@@ -1,0 +1,132 @@
+:root {
+  --site-ink: #172235;
+  --site-muted: #607087;
+  --site-paper: #f5f7fa;
+  --site-surface: #ffffff;
+  --site-line: #dce3eb;
+  --site-accent: #e2654f;
+  --site-accent-dark: #b84938;
+  --site-navy: #18324d;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: var(--site-ink);
+  background: linear-gradient(135deg, #eef4f8 0%, var(--site-paper) 45%, #f9f4ee 100%);
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+body > main,
+body > .markdown-style {
+  color: var(--site-ink);
+}
+
+body > main h1,
+body > main h2,
+body > main h3,
+body > .markdown-style h1,
+body > .markdown-style h2,
+body > .markdown-style h3 {
+  color: var(--site-navy);
+}
+
+body > .markdown-style {
+  width: min(100% - 3rem, 980px) !important;
+  max-width: 980px !important;
+  margin: 0 auto !important;
+  padding: 4rem 0 5rem !important;
+  background: transparent !important;
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+}
+
+body > .markdown-style h1 {
+  margin-bottom: 1rem;
+  font-size: clamp(2.6rem, 7vw, 5.4rem);
+  letter-spacing: -0.04em;
+}
+
+body > .markdown-style h2 {
+  margin-top: 3.5rem;
+  padding-top: 3.5rem;
+  border-top: 1px solid var(--site-line);
+  font-size: clamp(1.8rem, 4vw, 2.8rem);
+  letter-spacing: -0.025em;
+}
+
+body > .markdown-style h3 {
+  color: var(--site-muted);
+}
+
+body > .markdown-style strong {
+  color: var(--site-accent-dark);
+}
+
+body > .markdown-style a {
+  color: var(--site-accent-dark);
+}
+
+body > .markdown-style blockquote {
+  border-left: 4px solid var(--site-accent);
+  background: rgb(226 101 79 / 9%);
+}
+
+body > .markdown-style pre {
+  border: 1px solid var(--site-line);
+  border-radius: 0.45rem;
+  background: #f4ede4;
+  color: var(--site-ink);
+}
+
+body > .markdown-style code {
+  color: var(--site-accent-dark);
+}
+
+body > .markdown-style table {
+  background: var(--site-surface);
+}
+
+body > .markdown-style th {
+  color: var(--site-accent-dark);
+  background: #f4ede4;
+}
+
+body > .markdown-style th,
+body > .markdown-style td {
+  border-color: var(--site-line);
+}
+
+/* Keep Marp controls functional while giving the presentation canvas the shared palette. */
+.bespoke-marp-osc {
+  color: var(--site-ink);
+}
+
+[data-marpit-svg] foreignObject > section {
+  color: var(--site-ink) !important;
+  background: #fffaf2 !important;
+  font-family: Georgia, "Times New Roman", serif !important;
+}
+
+[data-marpit-svg] foreignObject > section h1,
+[data-marpit-svg] foreignObject > section h2,
+[data-marpit-svg] foreignObject > section h3 {
+  color: var(--site-navy) !important;
+}
+
+[data-marpit-svg] foreignObject > section strong {
+  color: var(--site-accent-dark) !important;
+}
+
+[data-marpit-svg] foreignObject > section code {
+  color: var(--site-accent-dark) !important;
+}
+
+@media (max-width: 640px) {
+  body > .markdown-style {
+    width: min(100% - 2rem, 980px) !important;
+    padding-top: 2.5rem !important;
+  }
+}
