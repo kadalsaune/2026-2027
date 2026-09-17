@@ -99,6 +99,3 @@ Siste steg for en IT-drifter når Windows oppfører seg merkelig, er å verifise
 
 Dokumentet ditt skal inneholde totalt **4 skjermdumper** og svar på de **5 skriftlige spørsmålene** fra Del 1–4.
 
----
-
-Presentasjonen og lab-opplegget er opprettet. Si ifra hvis du ønsker å gjøre endringer eller tilpasninger!

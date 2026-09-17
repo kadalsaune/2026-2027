@@ -95,6 +95,6 @@ sfc /scannow
 
 Your document must contain a total of **4 screenshots** and answers to the **5 written questions** from Parts 1–4.
 
----
 
-The presentation and lab assignment are ready. Let me know if you would like to make changes or adaptations!
+
+
