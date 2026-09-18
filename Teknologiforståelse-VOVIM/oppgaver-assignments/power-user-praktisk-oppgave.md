@@ -36,24 +36,19 @@ I denne delen skal du utforske systemkommandoer som IT-teknikere bruker for å h
 Del 2: Prosessidentifikasjon og Ressursstyring (20 min)
 Når en bruker opplever at PC-en er treg, eller at et program har «hengt seg», bruker IT-driftere Resource Monitor til å isolere og analysere én bestemt prosess om gangen.
 
-Åpne Kalkulator-appen og Notisblokk (Notepad) fra Start-menyen på PC-en din.
-
-Åpne Resource Monitor ved å trykke Win + R og skrive: resmon
-
-Velg fanen CPU / Prosessor øverst i vinduet.
-
-Se i listen Processes (Prosesser). Finn prosessen CalculatorApp.exe (eller Calculator.exe / Notepad.exe) og hukk av i boksene til venstre for disse prosessene.
-
-Legg merke til at de andre seksjonene nederst på skjermen (som Associated Handles og Services) nå kun viser informasjon som tilhører de programmene du har huket av for.
-
-Utvid seksjonen Associated Handles nederst på CPU-fanen (mens du fortsatt har huket av for prosessen din).
+1. Åpne **Kalkulator-appen** og **Notisblokk (Notepad)** fra Start-menyen på PC-en din.
+2. Åpne **Kjør** (`Win + R`) og skriv: `resmon`
+3. Velg fanen **CPU / Prosessor** øverst i vinduet.
+4. Se i listen **Processes (Prosesser)**. Finn prosessen `CalculatorApp.exe` (eller `Calculator.exe` / `Notepad.exe`) og huk av i boksene til venstre for disse prosessene.
+5. Legg merke til at de andre seksjonene nederst på skjermen (som **Associated Handles** og **Services**) nå kun viser informasjon som tilhører de programmene du har huket av for.
+6. Utvid seksjonen **Associated Handles** nederst på **CPU**-fanen mens du fortsatt har prosessen valgt.
 
 📸 Dokumentasjon for Del 2:
 Skriftlig svar 1: Hvilken PID (Process ID – prosess-ID) har applikasjonen du huket av for i listen? (Obs: PID endrer seg hver gang et program startes!)
 
-Skriftlig svar 2: Velg fanen Nettverk øverst i Resource Monitor. Åpne nettleseren din (f.eks. Edge eller Chrome) og last inn en nettside med mye innhold (f.eks. vg.no eller en HD-video på YouTube). Hvilken prosess oppnår øverst verdi under Total (B/sek) i listen over nettverksaktivitet?
+Skriftlig svar 2: Velg fanen **Nettverk** øverst i Resource Monitor. Åpne nettleseren din (f.eks. Edge eller Chrome) og last inn en nettside med mye innhold (f.eks. vg.no eller en HD-video på YouTube). Hvilken prosess oppnår øverst verdi under `Total (B/sek)` i listen over nettverksaktivitet?
 
-Skjermdump 2: Ta en skjermdump av Resource Monitor der du har huket av for en prosess i CPU-listen, slik at man ser at visningen nederst filtreres på din valgte prosess.
+Skjermdump 2: Ta en skjermdump av Resource Monitor der du har huket av for en prosess i CPU-listen, slik at visningen nederst filtreres på din valgte prosess.
 
 ---
 

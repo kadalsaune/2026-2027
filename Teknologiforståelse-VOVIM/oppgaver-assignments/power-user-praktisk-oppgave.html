@@ -101,18 +101,20 @@
     </ul>
     <hr>
     <h3 id="del-2-dypdykk-i-prosesser-med-ressursovervåking-20-min"><a class="anchor" aria-hidden="true" tabindex="-1" href="#del-2-dypdykk-i-prosesser-med-ressursovervåking-20-min"><span class="octicon octicon-link"></span></a>Del 2: Dypdykk i prosesser med Ressursovervåking (20 min)</h3>
-    <p>Når en bruker klager på at PC-en er treg eller at en fil ikke lar seg slette fordi den "er i bruk", benytter vi <strong>Resource Monitor</strong>.</p>
+    <p>Når en bruker opplever at PC-en er treg, eller at et program har «hengt seg», bruker IT-driftere Resource Monitor til å isolere og analysere én bestemt prosess om gangen.</p>
     <ol>
-      <li>Åpne <strong>Kjør</strong> (<code>Win + R</code>) og skriv <code>resmon</code>.</li>
-      <li>Åpne <strong>Notisblokk (Notepad)</strong>, skriv en kort tekst og lagre den på Skrivebordet med navnet <code>labtest.txt</code>. La Notisblokk stå åpen!</li>
-      <li>Gå til <strong>Resource Monitor</strong> under fanen <strong>Disk</strong>.</li>
-      <li>Utvid seksjonen <strong>Associated Handles</strong> og søk etter <code>labtest.txt</code> i søkefeltet.</li>
+      <li>Åpne <strong>Kalkulator-appen</strong> og <strong>Notisblokk (Notepad)</strong> fra Start-menyen på PC-en din.</li>
+      <li>Åpne <strong>Kjør</strong> (<code>Win + R</code>) og skriv: <code>resmon</code></li>
+      <li>Velg fanen <strong>CPU / Prosessor</strong> øverst i vinduet.</li>
+      <li>Se i listen <strong>Processes (Prosesser)</strong>. Finn prosessen <code>CalculatorApp.exe</code> (eller <code>Calculator.exe</code> / <code>Notepad.exe</code>) og huk av i boksene til venstre for disse prosessene.</li>
+      <li>Legg merke til at de andre seksjonene nederst på skjermen (som <strong>Associated Handles</strong> og <strong>Services</strong>) nå kun viser informasjon som tilhører de programmene du har huket av for.</li>
+      <li>Utvid seksjonen <strong>Associated Handles</strong> nederst på <strong>CPU</strong>-fanen mens du fortsatt har prosessen valgt.</li>
       <li><strong>📸 Dokumentasjon for Del 2:</strong></li>
     </ol>
     <ul>
-      <li><strong>Skriftlig svar 1:</strong> Hva heter prosessen (<code>Process Name</code>) som holder filen <code>labtest.txt</code> låst?</li>
-      <li><strong>Skriftlig svar 2:</strong> Gå til fanen <strong>Nettverk</strong> i Resource Monitor. Åpne en fane i nettleseren og last inn en tung nettside (f.eks. vg.no eller YouTube). Hvilken prosess oppnår øverst <code>Total (B/sec)</code> i nettverksseksjonen?</li>
-      <li><strong>Skjermdump 2:</strong> Ta skjermdump av <strong>Associated Handles</strong> der <code>labtest.txt</code> vises i søkeresultatet.</li>
+      <li><strong>Skriftlig svar 1:</strong> Hvilken PID (Process ID – prosess-ID) har applikasjonen du huket av for i listen? <em>(Obs: PID endrer seg hver gang et program startes!)</em></li>
+      <li><strong>Skriftlig svar 2:</strong> Velg fanen <strong>Nettverk</strong> øverst i Resource Monitor. Åpne nettleseren din (f.eks. Edge eller Chrome) og last inn en nettside med mye innhold (f.eks. vg.no eller en HD-video på YouTube). Hvilken prosess oppnår øverst verdi under <code>Total (B/sek)</code> i listen over nettverksaktivitet?</li>
+      <li><strong>Skjermdump 2:</strong> Ta en skjermdump av Resource Monitor der du har huket av for en prosess i CPU-listen, slik at visningen nederst filtreres på din valgte prosess.</li>
     </ul>
     <hr>
     <h3 id="del-3-logganalyse-og-stabilitetsindeks-25-min"><a class="anchor" aria-hidden="true" tabindex="-1" href="#del-3-logganalyse-og-stabilitetsindeks-25-min"><span class="octicon octicon-link"></span></a>Del 3: Logganalyse og Stabilitetsindeks (25 min)</h3>
