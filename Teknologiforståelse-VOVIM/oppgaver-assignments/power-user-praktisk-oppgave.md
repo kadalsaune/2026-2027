@@ -33,20 +33,27 @@ I denne delen skal du utforske systemkommandoer som IT-teknikere bruker for å h
 
 ---
 
-### Del 2: Dypdykk i prosesser med Ressursovervåking (20 min)
+Del 2: Prosessidentifikasjon og Ressursstyring (20 min)
+Når en bruker opplever at PC-en er treg, eller at et program har «hengt seg», bruker IT-driftere Resource Monitor til å isolere og analysere én bestemt prosess om gangen.
 
-Når en bruker klager på at PC-en er treg eller at en fil ikke lar seg slette fordi den "er i bruk", benytter vi **Resource Monitor**.
+Åpne Kalkulator-appen og Notisblokk (Notepad) fra Start-menyen på PC-en din.
 
-1. Åpne **Kjør** (`Win + R`) og skriv `resmon`.
-2. Åpne **Notisblokk (Notepad)**, skriv en kort tekst og lagre den på Skrivebordet med navnet `labtest.txt`. La Notisblokk stå åpen!
-3. Gå til **Resource Monitor** under fanen **Disk**.
-4. Utvid seksjonen **Associated Handles** og søk etter `labtest.txt` i søkefeltet.
-5. **📸 Dokumentasjon for Del 2:**
-* **Skriftlig svar 1:** Hva heter prosessen (`Process Name`) som holder filen `labtest.txt` låst?
-* **Skriftlig svar 2:** Gå til fanen **Nettverk** i Resource Monitor. Åpne en fane i nettleseren og last inn en tung nettside (f.eks. vg.no eller YouTube). Hvilken prosess oppnår øverst `Total (B/sec)` i nettverksseksjonen?
-* **Skjermdump 2:** Ta skjermdump av **Associated Handles** der `labtest.txt` vises i søkeresultatet.
+Åpne Resource Monitor ved å trykke Win + R og skrive: resmon
 
+Velg fanen CPU / Prosessor øverst i vinduet.
 
+Se i listen Processes (Prosesser). Finn prosessen CalculatorApp.exe (eller Calculator.exe / Notepad.exe) og hukk av i boksene til venstre for disse prosessene.
+
+Legg merke til at de andre seksjonene nederst på skjermen (som Associated Handles og Services) nå kun viser informasjon som tilhører de programmene du har huket av for.
+
+Utvid seksjonen Associated Handles nederst på CPU-fanen (mens du fortsatt har huket av for prosessen din).
+
+📸 Dokumentasjon for Del 2:
+Skriftlig svar 1: Hvilken PID (Process ID – prosess-ID) har applikasjonen du huket av for i listen? (Obs: PID endrer seg hver gang et program startes!)
+
+Skriftlig svar 2: Velg fanen Nettverk øverst i Resource Monitor. Åpne nettleseren din (f.eks. Edge eller Chrome) og last inn en nettside med mye innhold (f.eks. vg.no eller en HD-video på YouTube). Hvilken prosess oppnår øverst verdi under Total (B/sek) i listen over nettverksaktivitet?
+
+Skjermdump 2: Ta en skjermdump av Resource Monitor der du har huket av for en prosess i CPU-listen, slik at man ser at visningen nederst filtreres på din valgte prosess.
 
 ---
 
