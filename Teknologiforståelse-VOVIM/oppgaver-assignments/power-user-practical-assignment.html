@@ -107,17 +107,19 @@
     </ol>
     <hr>
     <h3 id="part-2-a-deep-dive-into-processes-with-resource-monitor-20-min"><a class="anchor" aria-hidden="true" tabindex="-1" href="#part-2-a-deep-dive-into-processes-with-resource-monitor-20-min"><span class="octicon octicon-link"></span></a>Part 2: A deep dive into processes with Resource Monitor (20 min)</h3>
-    <p>When a user complains that the PC is slow or that a file cannot be deleted because it "is in use", we use <strong>Resource Monitor</strong>.</p>
+    <p>When a user reports that the PC is slow, or that an application has "stopped responding", IT operations use <strong>Resource Monitor</strong> to isolate and analyze one process at a time.</p>
     <ol>
-      <li>Open <strong>Run</strong> (<code>Win + R</code>) and type <code>resmon</code>.</li>
-      <li>Open <strong>Notepad</strong>, write a short text and save it on the Desktop as <code>labtest.txt</code>. Leave Notepad open!</li>
-      <li>Go to <strong>Resource Monitor</strong> and open the <strong>Disk</strong> tab.</li>
-      <li>Expand the <strong>Associated Handles</strong> section and search for <code>labtest.txt</code> in the search field.</li>
+      <li>Open the <strong>Calculator</strong> app and <strong>Notepad</strong> from the Start menu on your PC.</li>
+      <li>Open <strong>Run</strong> (<code>Win + R</code>) and type: <code>resmon</code></li>
+      <li>Select the <strong>CPU / Processor</strong> tab at the top of the window.</li>
+      <li>In the <strong>Processes</strong> list, find the <code>CalculatorApp.exe</code> process (or <code>Calculator.exe</code> / <code>Notepad.exe</code>) and tick the boxes to the left of those processes.</li>
+      <li>Notice that the other sections at the bottom of the screen (such as <strong>Associated Handles</strong> and <strong>Services</strong>) now show information only for the programs you have selected.</li>
+      <li>Expand the <strong>Associated Handles</strong> section at the bottom of the <strong>CPU</strong> tab while keeping your selected process checked.</li>
       <li><strong>📸 Documentation for Part 2:</strong>
         <ul>
-          <li><strong>Written answer 1:</strong> What is the name of the process (<code>Process Name</code>) that is keeping the file <code>labtest.txt</code> locked?</li>
-          <li><strong>Written answer 2:</strong> Go to the <strong>Network</strong> tab in Resource Monitor. Open a browser tab and load a data-heavy website, such as YouTube. Which process is at the top for <code>Total (B/sec)</code> in the network section?</li>
-          <li><strong>Screenshot 2:</strong> Take a screenshot of <strong>Associated Handles</strong> showing <code>labtest.txt</code> in the search results.</li>
+          <li><strong>Written answer 1:</strong> What PID (Process ID) does the application you selected have in the list? <em>(Note: the PID changes every time a program starts!)</em></li>
+          <li><strong>Written answer 2:</strong> Select the <strong>Network</strong> tab at the top of Resource Monitor. Open your browser (for example Edge or Chrome) and load a page with a lot of content (for example vg.no or an HD video on YouTube). Which process reaches the highest value under <code>Total (B/sec)</code> in the network activity list?</li>
+          <li><strong>Screenshot 2:</strong> Take a screenshot of Resource Monitor with one process checked in the CPU list so the lower section is filtered to your selected process.</li>
         </ul>
       </li>
     </ol>

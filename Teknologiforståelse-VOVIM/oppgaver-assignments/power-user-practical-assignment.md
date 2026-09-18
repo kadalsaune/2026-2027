@@ -34,16 +34,18 @@ In this part, you will explore system commands that IT technicians use to jump d
 
 ### Part 2: A deep dive into processes with Resource Monitor (20 min)
 
-When a user complains that the PC is slow or that a file cannot be deleted because it "is in use", we use **Resource Monitor**.
+When a user reports that the PC is slow, or that an application has "stopped responding", IT operations use **Resource Monitor** to isolate and analyze one process at a time.
 
-1. Open **Run** (`Win + R`) and type `resmon`.
-2. Open **Notepad**, write a short text and save it on the Desktop as `labtest.txt`. Leave Notepad open!
-3. Go to **Resource Monitor** and open the **Disk** tab.
-4. Expand the **Associated Handles** section and search for `labtest.txt` in the search field.
-5. **📸 Documentation for Part 2:**
-   * **Written answer 1:** What is the name of the process (`Process Name`) that is keeping the file `labtest.txt` locked?
-   * **Written answer 2:** Go to the **Network** tab in Resource Monitor. Open a browser tab and load a data-heavy website, such as YouTube. Which process is at the top for `Total (B/sec)` in the network section?
-   * **Screenshot 2:** Take a screenshot of **Associated Handles** showing `labtest.txt` in the search results.
+1. Open the **Calculator** app and **Notepad** from the Start menu on your PC.
+2. Open **Run** (`Win + R`) and type: `resmon`
+3. Select the **CPU / Processor** tab at the top of the window.
+4. In the **Processes** list, find the `CalculatorApp.exe` process (or `Calculator.exe` / `Notepad.exe`) and tick the boxes to the left of those processes.
+5. Notice that the other sections at the bottom of the screen (such as **Associated Handles** and **Services**) now show information only for the programs you have selected.
+6. Expand the **Associated Handles** section at the bottom of the **CPU** tab while keeping your selected process checked.
+7. **📸 Documentation for Part 2:**
+   * **Written answer 1:** What PID (Process ID) does the application you selected have in the list? *(Note: the PID changes every time a program starts!)*
+   * **Written answer 2:** Select the **Network** tab at the top of Resource Monitor. Open your browser (for example Edge or Chrome) and load a page with a lot of content (for example vg.no or an HD video on YouTube). Which process reaches the highest value under `Total (B/sec)` in the network activity list?
+   * **Screenshot 2:** Take a screenshot of Resource Monitor with one process checked in the CPU list so the lower section is filtered to your selected process.
 
 
 
