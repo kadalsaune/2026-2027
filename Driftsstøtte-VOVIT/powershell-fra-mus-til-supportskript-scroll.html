@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="En scrollbar PowerShell-presentasjon om klientdrift, rørgata og supportskript.">
+  <title>Hvorfor PowerShell? | Fra mus til supportskript</title>
+  <style>
+    :root {
+      --ink: #1f2933;
+      --muted: #52606d;
+      --navy: #173f5f;
+      --blue: #20639b;
+      --gold: #f6a01a;
+      --red: #b54a35;
+      --green: #2a9d62;
+      --paper: #f7f4ed;
+      --surface: #fffdfa;
+      --line: #d9e2ec;
+      --code: #102a43;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; scroll-snap-type: y proximity; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 10% 5%, rgb(246 160 26 / 12%), transparent 28rem),
+        linear-gradient(135deg, #eef4f8 0%, var(--paper) 48%, #f9f4ee 100%);
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.65;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0 0 auto;
+      z-index: 10;
+      height: 4px;
+      background: linear-gradient(90deg, var(--blue), var(--gold), var(--red));
+    }
+    a { color: var(--red); }
+    .site-header {
+      width: min(100% - 2rem, 1180px);
+      margin: 0 auto;
+      padding: 1.5rem 0 0;
+      font: 700 .72rem/1.2 "Segoe UI", Tahoma, sans-serif;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .site-header a { color: var(--navy); text-decoration: none; }
+    .layout {
+      display: grid;
+      grid-template-columns: 10rem minmax(0, 1fr);
+      gap: 2rem;
+      width: min(100% - 2rem, 1180px);
+      margin: 0 auto;
+    }
+    main { min-width: 0; }
+    .slide {
+      display: grid;
+      align-content: center;
+      min-height: min(90vh, 58rem);
+      padding: 6rem clamp(1rem, 5vw, 5rem);
+      border-bottom: 1px solid rgb(217 226 236 / 80%);
+      scroll-snap-align: start;
+    }
+    .slide + .slide { min-height: min(78vh, 52rem); }
+    .hero { min-height: 88vh; align-content: end; padding-bottom: 7rem; }
+    .eyebrow {
+      margin: 0 0 1rem;
+      color: var(--red);
+      font: 700 .78rem/1.3 "Segoe UI", Tahoma, sans-serif;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3 { color: var(--navy); line-height: 1.08; }
+    h1 { max-width: 12ch; margin: 0 0 1.5rem; font-size: clamp(3rem, 8vw, 6.8rem); letter-spacing: -.045em; }
+    h2 { margin: 0 0 1.6rem; font-size: clamp(2rem, 4vw, 3.8rem); letter-spacing: -.035em; }
+    h3 { margin: 2rem 0 .65rem; font-size: clamp(1.25rem, 2vw, 1.7rem); }
+    p, ul, ol, table, pre { max-width: 54rem; }
+    .lead { max-width: 48rem; color: var(--muted); font: 1.2rem/1.6 "Segoe UI", Tahoma, sans-serif; }
+    .meta { color: var(--muted); font: .95rem "Segoe UI", Tahoma, sans-serif; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; max-width: 58rem; }
+    .panel, .fact, .challenge, .success, .warning {
+      margin: 1.5rem 0;
+      padding: 1.25rem 1.5rem;
+      border: 1px solid var(--line);
+      border-radius: .5rem;
+      background: rgb(255 253 250 / 86%);
+    }
+    .panel { border-top: 4px solid var(--blue); }
+    .fact { border-left: 5px solid var(--blue); background: #edf5fb; }
+    .challenge { border-left: 5px solid var(--gold); background: #fff3d6; }
+    .success { border-left: 5px solid var(--green); background: #e5f5ec; }
+    .warning { border-left: 5px solid var(--red); background: #fde9e5; }
+    .fact strong, .challenge strong, .success strong, .warning strong { color: var(--navy); }
+    .fact::before { content: "Fakta og arbeidsmåte"; display: block; margin-bottom: .35rem; color: var(--blue); font: 700 .72rem "Segoe UI", Tahoma, sans-serif; letter-spacing: .12em; text-transform: uppercase; }
+    code { padding: .12em .35em; border-radius: .25rem; background: #e7edf2; color: var(--navy); font: .92em/1.4 Consolas, "Courier New", monospace; }
+    pre { overflow-x: auto; margin: 1.2rem 0; padding: 1.25rem 1.4rem; border-radius: .5rem; background: var(--code); color: #f0f4f8; box-shadow: 0 12px 28px rgb(16 42 67 / 14%); }
+    pre code { padding: 0; background: transparent; color: inherit; font-size: .9rem; }
+    table { width: 100%; border-collapse: collapse; margin: 1.2rem 0; font-family: "Segoe UI", Tahoma, sans-serif; font-size: .94rem; }
+    th, td { padding: .75rem; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: white; background: var(--navy); }
+    ul, ol { padding-left: 1.4rem; }
+    li + li { margin-top: .45rem; }
+    .toc {
+      position: sticky;
+      top: 2rem;
+      align-self: start;
+      padding: 1rem 0;
+      font: .78rem/1.35 "Segoe UI", Tahoma, sans-serif;
+    }
+    .toc p { margin: 0 0 .7rem; color: var(--muted); font-weight: 700; text-transform: uppercase; letter-spacing: .1em; }
+    .toc a { display: block; padding: .42rem .6rem; border-left: 2px solid transparent; color: var(--muted); text-decoration: none; }
+    .toc a:hover, .toc a:focus-visible { border-left-color: var(--gold); color: var(--navy); background: rgb(255 255 255 / 55%); }
+    .footer { padding: 4rem clamp(1rem, 5vw, 5rem); color: var(--muted); font: .9rem "Segoe UI", Tahoma, sans-serif; }
+    @media (max-width: 800px) {
+      .layout { display: block; }
+      .toc { position: static; display: flex; gap: .35rem; overflow-x: auto; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+      .toc p { display: none; }
+      .toc a { flex: 0 0 auto; border: 1px solid var(--line); border-radius: .3rem; }
+      .slide { min-height: auto; padding: 4.5rem 0; }
+      .slide + .slide { min-height: auto; }
+      .hero { min-height: 78vh; padding-bottom: 5rem; }
+      .grid { grid-template-columns: 1fr; }
+    }
+    @media print {
+      body { background: white; }
+      .site-header, .toc { display: none; }
+      .layout { display: block; width: 100%; }
+      .slide, .slide + .slide { min-height: 0; page-break-before: always; padding: 2rem 0; }
+      .hero { page-break-before: avoid; }
+      pre { white-space: pre-wrap; box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header"><a href="../index.html">Charlottenlund vgs · 2026–2027</a></header>
+  <div class="layout">
+    <nav class="toc" aria-label="Innhold">
+      <p>På denne siden</p>
+      <a href="#start">Start</a>
+      <a href="#modul-1">Modul 1</a>
+      <a href="#modul-2">Modul 2</a>
+      <a href="#modul-3">Modul 3</a>
+      <a href="#modul-4">Modul 4</a>
+      <a href="#oppsummering">Oppsummering</a>
+    </nav>
+
+    <main>
+      <section class="slide hero" id="start">
+        <p class="eyebrow">VG2 IT Driftstøtte · Klientfokus</p>
+        <h1>Hvorfor PowerShell?</h1>
+        <p class="lead">Fra mus til supportskript: en praktisk og trinnvis introduksjon til kommandolinjen, objekter, rørgata og automatisert klientdrift.</p>
+        <p class="meta">3–5 undervisningstimer · Les, presenter og kjør kommandoene underveis</p>
+      </section>
+
+      <section class="slide" id="oversikt">
+        <p class="eyebrow">Mål og arbeidsmåte</p>
+        <h2>Fra «hvorfor?» til et nyttig skript</h2>
+        <p>PowerShell er mest interessant når det løser en oppgave som ellers blir repetitiv. I denne gjennomgangen starter vi med en synlig forskjell mellom mus og tastatur, før vi bygger opp forståelsen litt etter litt.</p>
+        <div class="grid">
+          <div class="panel"><h3>Etter økten kan du</h3><ul><li>forklare hvorfor driftere bruker kommandolinjen</li><li>gjenkjenne mønsteret <strong>Verb-Noun</strong></li><li>hente, filtrere og sortere objekter</li><li>lage et enkelt supportskript</li></ul></div>
+          <div class="panel"><h3>Rød tråd</h3><p><strong>Hent</strong> data → <strong>undersøk</strong> data → <strong>bearbeid</strong> data → <strong>lagre</strong> data.</p><p>Sluttproduktet er <code>Generer-Helserapport.ps1</code>.</p></div>
+        </div>
+        <div class="fact"><strong>For leseren:</strong> Kommandoene er laget for å kunne kjøres enkeltvis. Stopp etter hver blokk og sammenlign resultatet med det du forventet.</div>
+      </section>
+
+      <section class="slide" id="modul-1">
+        <p class="eyebrow">Modul 1 · Mus vs. tastatur</p>
+        <h2>Den første aha-opplevelsen</h2>
+        <p>Start med en oppgave alle kjenner: lag mapper. Først kan klassen anslå hvor lang tid det tar med mus. Deretter ser vi på hva som egentlig gjentas, og uttrykker den gjentakelsen som kode.</p>
+        <div class="challenge"><strong>Prøv først:</strong> Lag 10 mapper på skrivebordet med navnene <code>Elev_1</code> til <code>Elev_10</code>. Hva måtte du gjøre om antallet ble 100?</div>
+        <h3>Jobb trygt i en midlertidig mappe</h3>
+        <p>Før vi lager mapper, oppretter vi et avgrenset arbeidsområde i temp-mappen. Da kan demonstrasjonen ryddes bort uten å påvirke skrivebordet.</p>
+        <pre><code>Get-Location
+      $demo = Join-Path $env:TEMP "PS-Kurs-Demo"
+      New-Item -ItemType Directory -Path $demo -Force
+      Set-Location $demo</code></pre>
+        <div class="fact"><strong>Hvorfor dette er viktig:</strong> <code>Get-Location</code> viser hvor kommandoene virker. Når en kommando skal lage, endre eller slette noe, bør du vite hvilken mappe du står i først.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 1 · Bygg opp kommandoen</p>
+        <h2>Fra én mappe til hundre</h2>
+        <p>Det er lettere å forstå automatisering når vi begynner med én konkret handling og deretter legger til gjentakelse.</p>
+        <pre><code>New-Item -ItemType Directory -Name "Elev_1"
+Get-ChildItem</code></pre>
+        <p>Les kommandoen som en setning: <code>New-Item</code> sier hva vi gjør, <code>-ItemType Directory</code> sier hvilken type objekt vi lager, og <code>-Name</code> gir objektet navn.</p>
+        <h3>Se tallrekken alene</h3>
+        <pre><code>1..5</code></pre>
+        <p>En tallrekke kan sendes gjennom rørgata til en handling:</p>
+        <pre><code>1..5 | ForEach-Object {
+    New-Item -ItemType Directory -Name "Elev_$_"
+}
+Get-ChildItem</code></pre>
+        <div class="challenge"><strong>Interaktiv oppgave:</strong> Endre <code>1..5</code> til <code>1..10</code>. Hva forteller <code>$_</code> oss om elementet som behandles akkurat nå?</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 1 · Driftsperspektivet</p>
+        <h2>Det som er lite én gang, blir stort i drift</h2>
+        <p>På én maskin kan det virke raskt nok å klikke. På 50 maskiner blir den samme handlingen en belastning. Drift handler derfor ofte om å gjøre en oppgave repeterbar og lik hver gang.</p>
+        <div class="grid">
+          <div class="panel"><h3>Informasjon fra mange klienter</h3><ul><li>serienummer</li><li>IP-adresse</li><li>ledig diskplass</li><li>tjenester som kjører</li></ul></div>
+          <div class="panel"><h3>Spørsmål å diskutere</h3><p>Hva er fordelen med at resultatet kommer fra samme kommando hver gang?</p><p>Hva må vi kontrollere før vi automatiserer?</p></div>
+        </div>
+        <h3>Rydd etter demonstrasjonen</h3>
+        <pre><code>Set-Location $env:TEMP
+Remove-Item -Path $demo -Recurse -Force
+Test-Path $demo</code></pre>
+        <div class="warning"><strong>Vær bevisst:</strong> <code>-Recurse</code> og <code>-Force</code> kan gjøre en sletting omfattende. Avgrens alltid stien, og bruk <code>Test-Path</code> eller <code>Get-ChildItem</code> før en destruktiv kommando.</div>
+      </section>
+
+      <section class="slide" id="modul-2">
+        <p class="eyebrow">Modul 2 · Verb-Noun</p>
+        <h2>PowerShell er bygget som et språk</h2>
+        <p>PowerShell-kommandoer følger vanligvis mønsteret <strong>Verb-Noun</strong>. Det gjør kommandoene lesbare og gjør det mulig å lete etter nye kommandoer uten å kunne alt på forhånd.</p>
+        <table><thead><tr><th>Handling</th><th>Kommando</th><th>Betydning</th></tr></thead><tbody><tr><td>Hente</td><td><code>Get-Process</code></td><td>viser prosesser</td></tr><tr><td>Hente</td><td><code>Get-Service</code></td><td>viser tjenester</td></tr><tr><td>Hente</td><td><code>Get-Disk</code></td><td>viser disker</td></tr><tr><td>Lage</td><td><code>New-Item</code></td><td>lager filer eller mapper</td></tr><tr><td>Endre</td><td><code>Set-Volume</code></td><td>endrer voluminnstillinger</td></tr><tr><td>Stoppe/fjerne</td><td><code>Stop-Process</code> / <code>Remove-Item</code></td><td>stopper eller fjerner</td></tr></tbody></table>
+        <pre><code>Get-Command -Verb Get | Select-Object -First 10 Name
+Get-Command -Noun Process</code></pre>
+        <div class="fact"><strong>Arbeidsmåte:</strong> Gjett et verb, søk etter substantivet, les hjelpen og test kommandoen uten å endre noe. Det er en mer robust strategi enn å pugge en lang liste.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 2 · Objekter</p>
+        <h2>Se hva du faktisk får tilbake</h2>
+        <p>PowerShell returnerer objekter med egenskaper. Vi kan lagre resultatet, undersøke det og bruke egenskapene videre.</p>
+        <pre><code>$prosesser = Get-Process
+$prosesser | Select-Object -First 3
+
+$prosesser[0].Name
+$prosesser[0].Id
+$prosesser[0].WS</code></pre>
+        <p>Her er <code>$prosesser</code> en samling prosessobjekter. <code>Name</code>, <code>Id</code> og <code>WS</code> er egenskaper som beskriver hvert objekt.</p>
+        <h3>Finn flere egenskaper</h3>
+        <pre><code>Get-Process | Get-Member
+Get-Process | Select-Object -First 1 | Format-List *</code></pre>
+        <div class="challenge"><strong>Minioppgave:</strong> Finn én egenskap som kan hjelpe deg når du leter etter årsaken til at en maskin er treg. Forklar hvorfor du valgte den.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 2 · Hjelp</p>
+        <h2>Finn veien selv</h2>
+        <p>En god driftstekniker trenger ikke huske alle kommandoer. Det viktigste er å kunne finne, lese og teste riktig informasjon.</p>
+        <pre><code>Get-Help Get-Process -Online
+Get-Command *network*
+Get-Command -Verb Get</code></pre>
+        <h3>Live jakt på en kommando</h3>
+        <ol><li>Finn kommandoer som handler om nettverk.</li><li>Velg én kommando som begynner med <code>Get-</code>.</li><li>Les eksemplene.</li><li>Kjør den uten å endre systemet.</li></ol>
+        <pre><code>$kommando = Get-Command *network* | Select-Object -First 1
+$kommando.Name
+Get-Help $kommando.Name -Examples</code></pre>
+        <div class="success"><strong>Husk:</strong> <code>Get-Help</code> forklarer kommandoen, mens <code>Get-Command</code> hjelper deg å finne kommandoer. Sammen er de et lite oppslagsverk i terminalen.</div>
+      </section>
+
+      <section class="slide" id="modul-3">
+        <p class="eyebrow">Modul 3 · Rørgata</p>
+        <h2>Én kommando gjør jobben, flere gjør den nyttig</h2>
+        <p>Rørgata (<code>|</code>) sender resultatet fra én kommando videre til den neste. Vi kan tenke på den som en arbeidsflyt: hent → sorter → velg.</p>
+        <h3>Kjør hvert trinn separat</h3>
+        <pre><code>$alle = Get-Process
+$sortert = $alle | Sort-Object WS -Descending
+$sortert | Select-Object -First 5 Name, WS</code></pre>
+        <p>Sorteringen endrer ikke prosessene på maskinen. Den endrer bare rekkefølgen på informasjonen vi ser.</p>
+        <div class="fact"><strong>Objektfordelen:</strong> PowerShell sender objekter videre, ikke bare tekst. Derfor kan <code>Sort-Object</code> bruke egenskapen <code>WS</code> direkte.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 3 · Filtrering og utvalg</p>
+        <h2>Finn bare det som er relevant</h2>
+        <p>En supporttekniker trenger sjelden alt. Filtrering og utvalg gjør resultatet lettere å lese og lettere å handle på.</p>
+        <pre><code>$aktive = Get-Service | Where-Object Status -eq "Running"
+$aktive | Select-Object -First 10 Name, DisplayName, Status
+$aktive.Count</code></pre>
+        <h3>Endre spørsmålet</h3>
+        <pre><code>Get-Service | Where-Object Status -ne "Running"</code></pre>
+        <p><code>-eq</code> betyr lik, mens <code>-ne</code> betyr ikke lik. Prøv også å filtrere på en annen egenskap etter å ha sett resultatet fra <code>Get-Service | Get-Member</code>.</p>
+        <div class="challenge"><strong>Prøv selv:</strong> Vis de fem prosessene som bruker mest minne og ta med navn, prosess-ID og minnebruk.</div>
+        <pre><code>Get-Process |
+  Sort-Object WS -Descending |
+  Select-Object -First 5 Name, Id, WS</code></pre>
+      </section>
+
+      <section class="slide" id="modul-4">
+        <p class="eyebrow">Modul 4 · Sluttprosjekt</p>
+        <h2>Bygg en rapport for en treg klient</h2>
+        <p>En bruker ringer og sier: «Maskinen er treg.» Oppgaven er å lage <code>Generer-Helserapport.ps1</code>, et lite skript som samler et første bilde av klienten og lagrer det som en tekstfil.</p>
+        <div class="grid"><div class="panel"><h3>Input</h3><p>Systemvariabler, dato, nettverksinformasjon og diskstatus.</p></div><div class="panel"><h3>Output</h3><p>En lesbar rapport på brukerens skrivebord.</p></div></div>
+        <pre><code>Klientdata → PowerShell-objekter → rapporttekst → fil</code></pre>
+        <div class="fact"><strong>Design før kode:</strong> Bestem først hva rapporten skal svare på. Da blir hver kommando en del av en tydelig supportsituasjon, ikke bare et tilfeldig eksempel.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 4 · Steg 1</p>
+        <h2>Hent verdiene én etter én</h2>
+        <p>Begynn med en verdi du kan skrive ut med en gang. Test hvert mellomsteg før du setter dem inn i rapporten.</p>
+        <pre><code>$datamaskin = $env:COMPUTERNAME
+$datamaskin
+
+$bruker = $env:USERNAME
+$dato = Get-Date -Format "yyyy-MM-dd HH:mm"
+"Maskin: $datamaskin | Bruker: $bruker | Tid: $dato"</code></pre>
+        <h3>Nettverk og disk</h3>
+        <pre><code>$ip = (Get-NetIPAddress -AddressFamily IPv4 |
+  Where-Object InterfaceAlias -notlike "*Loopback*").IPAddress |
+  Select-Object -First 1
+$disk = Get-Volume -DriveLetter C
+
+$ip
+$disk | Select-Object DriveLetter, SizeRemaining, Size</code></pre>
+        <div class="warning"><strong>Variasjon mellom maskiner:</strong> En klient kan ha flere IPv4-adresser, ingen tilkobling eller en annen diskstruktur. Derfor tester vi verdiene før vi bruker dem.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 4 · Steg 2</p>
+        <h2>Gjør dataene lesbare</h2>
+        <p>En rapport skal kunne leses av en supporttekniker som ikke var med på kjøringen. En here-string gjør det enkelt å bygge en tekst med linjeskift og overskrifter.</p>
+        <pre><code>$rapport = @"
+==========================================
+PC-HELSERAPPORT
+==========================================
+Dato:         $dato
+Datamaskin:   $datamaskin
+Innlogget:    $bruker
+IP-adresse:   $ip
+
+DISKSTATUS (C:)
+------------------------------------------
+Ledig plass:  $([math]::Round($disk.SizeRemaining / 1GB, 2)) GB
+Total plass:  $([math]::Round($disk.Size / 1GB, 2)) GB
+==========================================
+"@
+
+$rapport</code></pre>
+        <div class="fact"><strong>Lesbarhet er funksjonalitet:</strong> En rapport med tydelige felt, enheter og overskrifter er raskere å bruke når noen faktisk skal feilsøke en maskin.</div>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 4 · Steg 3</p>
+        <h2>Lagre, kontroller og forbedre</h2>
+        <pre><code>$sti = "$env:USERPROFILE\Desktop\PC_Rapport.txt"
+$rapport | Out-File -FilePath $sti
+
+Write-Host "Ferdig! Rapporten er lagret på skrivebordet." -ForegroundColor Green
+
+Test-Path $sti
+Get-Item $sti | Select-Object Name, Length, LastWriteTime
+Get-Content $sti</code></pre>
+        <p>Her verifiserer vi både at filen finnes, når den ble endret og hva den faktisk inneholder. Det er en liten, men viktig vane i automatisering.</p>
+        <div class="challenge"><strong>Utvid rapporten:</strong> Legg til antall prosesser, operativsystemversjon eller de fem tyngste prosessene. Test rapporten på nytt etter hver endring.</div>
+        <pre><code>Antall prosesser: $((Get-Process).Count)</code></pre>
+      </section>
+
+      <section class="slide">
+        <p class="eyebrow">Modul 4 · Kjøring og feilsøking</p>
+        <h2>Et skript er først ferdig når det kan testes</h2>
+        <p>Windows kan blokkere skriptkjøring. På skolens maskiner må dette avklares med lærer eller administrator.</p>
+        <pre><code>Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+
+Set-Location "C:\sti\til\mappen"
+Get-ChildItem *.ps1
+& .\Generer-Helserapport.ps1</code></pre>
+        <h3>Fire spørsmål ved en feil</h3>
+        <ol><li>Hvilken linje stoppet?</li><li>Hvilken verdi hadde variabelen?</li><li>Finnes kommandoen og egenskapen?</li><li>Kan trinnet kjøres alene?</li></ol>
+        <pre><code>$ip
+$disk
+Test-Path $sti
+Get-Command Get-Volume</code></pre>
+        <div class="warning"><strong>God feilsøking:</strong> Les hele feilmeldingen. Isoler uttrykket som feiler, og test det alene før du endrer resten av skriptet.</div>
+      </section>
+
+      <section class="slide" id="oppsummering">
+        <p class="eyebrow">Oppsummering</p>
+        <h2>Fra kommando til driftstenkning</h2>
+        <p>PowerShell handler ikke bare om å skrive kortere. Det handler om å gjøre arbeidsmåter tydelige, repeterbare og mulige å kontrollere.</p>
+        <div class="grid"><div class="panel"><h3>Husk</h3><ul><li><strong>Verb-Noun</strong> gjør kommandoer søkbare.</li><li><strong>Objekter</strong> har egenskaper vi kan bruke.</li><li><strong>Rørgata</strong> kobler små handlinger.</li><li><strong>Testing</strong> gjør automatisering tryggere.</li></ul></div><div class="panel"><h3>Forklar til en medelev</h3><ol><li>Hva henter rapporten?</li><li>Hvorfor bruker vi variabler?</li><li>Hvor brukes rørgata?</li><li>Hvordan kan rapporten hjelpe support?</li></ol></div></div>
+        <pre><code>Get-Help &lt;kommando&gt; -Online
+Get-Command *network*
+Get-Process | Sort-Object WS -Descending
+Get-Service | Where-Object Status -eq "Running"</code></pre>
+        <div class="success"><strong>Sluttpoeng:</strong> Et godt skript er forståelig, testbart og nyttig for andre enn den som skrev det.</div>
+      </section>
+
+      <footer class="footer">PowerShell · Klientdrift · VG2 IT Driftstøtte<br>Bruk siden som lesetekst, eller scroll fra topp til bunn som en presentasjon.</footer>
+    </main>
+  </div>
+</body>
+</html>
