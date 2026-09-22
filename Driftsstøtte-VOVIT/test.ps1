@@ -1,0 +1,2 @@
+$datamaskin = $env:COMPUTERNAME
+$datamaskin

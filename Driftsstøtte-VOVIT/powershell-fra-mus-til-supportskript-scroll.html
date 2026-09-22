@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="En scrollbar PowerShell-presentasjon om klientdrift, rørgata og supportskript.">
+  <meta name="description" content="En scrollbar PowerShell-presentasjon om klientdrift, vertikalstreken (pipe) og supportskript.">
   <title>Hvorfor PowerShell? | Fra mus til supportskript</title>
   <style>
     :root {
@@ -152,7 +152,7 @@
       <section class="slide hero" id="start">
         <p class="eyebrow">VG2 IT Driftstøtte · Klientfokus</p>
         <h1>Hvorfor PowerShell?</h1>
-        <p class="lead">Fra mus til supportskript: en praktisk og trinnvis introduksjon til kommandolinjen, objekter, rørgata og automatisert klientdrift.</p>
+        <p class="lead">Fra mus til supportskript: en praktisk og trinnvis introduksjon til kommandolinjen, objekter, vertikalstreken (pipe) og automatisert klientdrift.</p>
         <p class="meta">3–5 undervisningstimer · Les, presenter og kjør kommandoene underveis</p>
       </section>
 
@@ -190,7 +190,7 @@ Get-ChildItem</code></pre>
         <p>Les kommandoen som en setning: <code>New-Item</code> sier hva vi gjør, <code>-ItemType Directory</code> sier hvilken type objekt vi lager, og <code>-Name</code> gir objektet navn.</p>
         <h3>Se tallrekken alene</h3>
         <pre><code>1..5</code></pre>
-        <p>En tallrekke kan sendes gjennom rørgata til en handling:</p>
+        <p>En tallrekke kan sendes gjennom vertikalstreken (pipe) til en handling:</p>
         <pre><code>1..5 | ForEach-Object {
     New-Item -ItemType Directory -Name "Elev_$_"
 }
@@ -256,9 +256,9 @@ Get-Help $kommando.Name -Examples</code></pre>
       </section>
 
       <section class="slide" id="modul-3">
-        <p class="eyebrow">Modul 3 · Rørgata</p>
+        <p class="eyebrow">Modul 3 · vertikalstreken (pipe)</p>
         <h2>Én kommando gjør jobben, flere gjør den nyttig</h2>
-        <p>Rørgata (<code>|</code>) sender resultatet fra én kommando videre til den neste. Vi kan tenke på den som en arbeidsflyt: hent → sorter → velg.</p>
+        <p>vertikalstreken (pipe) (<code>|</code>) sender resultatet fra én kommando videre til den neste. Vi kan tenke på den som en arbeidsflyt: hent → sorter → velg.</p>
         <h3>Kjør hvert trinn separat</h3>
         <pre><code>$alle = Get-Process
 $sortert = $alle | Sort-Object WS -Descending
@@ -375,7 +375,7 @@ Get-Command Get-Volume</code></pre>
         <p class="eyebrow">Oppsummering</p>
         <h2>Fra kommando til driftstenkning</h2>
         <p>PowerShell handler ikke bare om å skrive kortere. Det handler om å gjøre arbeidsmåter tydelige, repeterbare og mulige å kontrollere.</p>
-        <div class="grid"><div class="panel"><h3>Husk</h3><ul><li><strong>Verb-Noun</strong> gjør kommandoer søkbare.</li><li><strong>Objekter</strong> har egenskaper vi kan bruke.</li><li><strong>Rørgata</strong> kobler små handlinger.</li><li><strong>Testing</strong> gjør automatisering tryggere.</li></ul></div><div class="panel"><h3>Forklar til en medelev</h3><ol><li>Hva henter rapporten?</li><li>Hvorfor bruker vi variabler?</li><li>Hvor brukes rørgata?</li><li>Hvordan kan rapporten hjelpe support?</li></ol></div></div>
+        <div class="grid"><div class="panel"><h3>Husk</h3><ul><li><strong>Verb-Noun</strong> gjør kommandoer søkbare.</li><li><strong>Objekter</strong> har egenskaper vi kan bruke.</li><li><strong>vertikalstreken (pipe)</strong> kobler små handlinger.</li><li><strong>Testing</strong> gjør automatisering tryggere.</li></ul></div><div class="panel"><h3>Forklar til en medelev</h3><ol><li>Hva henter rapporten?</li><li>Hvorfor bruker vi variabler?</li><li>Hvor brukes vertikalstreken (pipe)?</li><li>Hvordan kan rapporten hjelpe support?</li></ol></div></div>
         <pre><code>Get-Help &lt;kommando&gt; -Online
 Get-Command *network*
 Get-Process | Sort-Object WS -Descending
